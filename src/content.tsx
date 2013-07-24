@@ -2,8 +2,10 @@ import cssText from 'data-text:~/main.css'
 import type {
   PlasmoCSConfig,
 } from "plasmo"
+import PlayList from '~/components/play-list'
 import { Button } from '~/components/ui/button'
-import { injectMainStyles } from '~/lib/utils'
+import { getLastPath, injectMainStyles } from '~/lib/utils'
+import { usePlaylist } from '~store/play-list'
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -17,12 +19,6 @@ export const getStyle = () => {
   return style
 }
 
-function getLastPath() {
-  const pathname = window.location.pathname
-  const lastPath = pathname.split('/').filter(Boolean).pop()
-  return lastPath
-}
-
 function isBv(path: string) {
   return !!path.startsWith('BV')
 }
@@ -33,29 +29,40 @@ const Content = () => {
     console.log(lastPath)
     return null
   }
-
   injectMainStyles(cssText)
 
-  function handleAddToList() {
-    console.log(lastPath)
+  // 从这开始写
+  const { add } = usePlaylist()
 
-    chrome.runtime.sendMessage({
-      info: "我是 content.js"
-    }, res => {
-      // 答复
-      alert(res)
-    })
+  function handleAddToList() {
+    add(lastPath, 0, 0)
   }
 
   return (
-    <div className="p-3 space-y-2 bg-sky-50/90 rounded fixed left-2 top-2">
-      <Button
-        size='sm'
-        onClick={handleAddToList}
+    <>
+      <div className="p-3 space-y-2 bg-sky-50/90 rounded fixed right-2 top-2">
+        <Button
+          size='sm'
+          onClick={handleAddToList}
+        >
+          添加到收藏
+        </Button>
+      </div>
+
+      {/* 悬浮球 */}
+      <div
+        className="fixed left-4 translate-y-1/2 top-1/2"
       >
-        添加到收藏
-      </Button>
-    </div>
+        <PlayList>
+          <Button
+            size='sm'
+            className='hover:translate-x-1 hover:scale-110 transition-all rounded-full'
+          >
+            开
+          </Button>
+        </PlayList>
+      </div>
+    </>
   )
 }
 
