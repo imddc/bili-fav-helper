@@ -1,7 +1,12 @@
 import cssText from 'data-text:~/main.css'
+import type { PlasmoCSConfig } from "plasmo"
 import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
 import { injectMainStyles } from '~/lib/utils'
+
+export const config: PlasmoCSConfig = {
+  matches: ["<all_urls>"],
+  all_frames: true
+}
 
 // 引入tailwind
 export const getStyle = () => {
@@ -10,19 +15,44 @@ export const getStyle = () => {
   return style
 }
 
+function getLastPath() {
+  const pathname = window.location.pathname
+  const lastPath = pathname.split('/').filter(Boolean).pop()
+  return lastPath
+}
+
+function isBv(path: string) {
+  return !!path.startsWith('BV')
+}
+
 const Content = () => {
+  const lastPath = getLastPath()
+  if (!isBv(lastPath)) {
+    console.log(lastPath)
+    return null
+  }
+
   injectMainStyles(cssText)
 
-  return (
-    <div className="p-4 space-y-2 bg-sky-50 rounded m-2">
-      <div>
-        <h1>
-          Content
-        </h1>
-      </div>
+  function handleAddToList() {
+    console.log(lastPath)
 
-      <Input />
-      <Button size='sm'>click here</Button>
+    chrome.runtime.sendMessage({
+      info: "我是 content.js"
+    }, res => {
+      // 答复
+      alert(res)
+    })
+  }
+
+  return (
+    <div className="p-3 space-y-2 bg-sky-50/90 rounded fixed left-2 top-2">
+      <Button
+        size='sm'
+        onClick={handleAddToList}
+      >
+        添加到收藏
+      </Button>
     </div>
   )
 }
