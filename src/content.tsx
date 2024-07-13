@@ -1,5 +1,7 @@
 import cssText from 'data-text:~/main.css'
-import type { PlasmoCSConfig } from "plasmo"
+import type {
+  PlasmoCSConfig,
+} from "plasmo"
 import { Button } from '~/components/ui/button'
 import { injectMainStyles } from '~/lib/utils'
 

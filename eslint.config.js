@@ -4,6 +4,7 @@ export default antfu(
   {
     react: true,
     typescript: true,
+    javascript: true,
   },
   {
     ignores: [
