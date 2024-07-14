@@ -1,5 +1,5 @@
 import { CircleX, Play } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { ElementRef, useEffect, useRef, useState } from 'react'
 import { requestBaseDetail } from '~/api'
 import { Skeleton } from '~components/ui/skeleton'
 import { getLastPath } from '~lib/utils'
@@ -16,6 +16,7 @@ const PlayItem = ({ bv }: PlayItemProps) => {
 
   const [data, setData] = useState<BaseDetail>({} as BaseDetail)
   const [isLoading, setIsLoading] = useState(false)
+  const itemRef = useRef<ElementRef<'div'>>(null)
 
   async function getData() {
     setIsLoading(true)
@@ -39,6 +40,12 @@ const PlayItem = ({ bv }: PlayItemProps) => {
 
   useEffect(() => {
     getData()
+    setTimeout(() => {
+      itemRef.current.scrollIntoView({
+        behavior: 'smooth'
+      })
+
+    })
   }, [])
 
   if (isLoading) {
@@ -47,6 +54,7 @@ const PlayItem = ({ bv }: PlayItemProps) => {
 
   return (
     <div
+      ref={itemRef}
       className='flex gap-2 items-center justify-between p-2 cursor-pointer rounded hover:bg-sky-50 active:bg-sky-100 active:scale-95 transition'
       onDoubleClick={handleClick}
     >
