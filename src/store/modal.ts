@@ -8,7 +8,7 @@ export interface ModalState {
 }
 
 export const useModal = create<ModalState>()((set) => ({
-  isOpen: true,
+  isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
   toggle: () => set((state) => ({ isOpen: !state.isOpen })),
