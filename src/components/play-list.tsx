@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'
+import { CircleOff, X } from 'lucide-react'
 import { type PropsWithChildren } from 'react'
 import PlayItem from '~/components/play-item'
 import { Button } from '~/components/ui/button'
@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog"
-import { play } from '~/lib/utils'
+import { getLastPath, play } from '~/lib/utils'
 import { useModal } from '~/store/modal'
 import { usePlaylist } from '~/store/play-list'
 
@@ -18,7 +18,7 @@ interface PlayListProps extends PropsWithChildren {
 }
 
 const PlayList = ({ children }: PlayListProps) => {
-  const { playlist } = usePlaylist()
+  const { playlist, remove } = usePlaylist()
   const { isOpen, onOpen, onClose } = useModal()
 
   function handleOpenChange(open: boolean) {
@@ -30,6 +30,17 @@ const PlayList = ({ children }: PlayListProps) => {
     play(first.bv)
   }
 
+  function handleRemove(bv: string) {
+    if (bv === getLastPath()) {
+      // current bv 
+      remove(bv)
+      const index = playlist.findIndex(_ => _.bv === bv)
+      const next = index === playlist.length - 1 ? playlist[0] : playlist[index + 1]
+      play(next.bv)
+    } else {
+      remove(bv)
+    }
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => handleOpenChange}>
@@ -48,9 +59,14 @@ const PlayList = ({ children }: PlayListProps) => {
         </div>
 
         <div className='max-h-[60vh] overflow-y-auto pr-2'>
-          {
+          {playlist.length === 0 ?
+            <div className='flex flex-col items-center justify-center p-2 space-y-2'>
+              <CircleOff className='size-24 text-slate-400' />
+              <p>没有数据</p>
+            </div>
+            :
             playlist.map(item => (
-              <PlayItem key={item.bv} {...item} />
+              <PlayItem key={item.bv} {...item} remove={(bv) => handleRemove(bv)} />
             ))
           }
         </div>
