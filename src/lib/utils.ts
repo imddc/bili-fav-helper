@@ -10,3 +10,12 @@ export const injectMainStyles = (cssText: string) => {
   style.textContent = cssText
   document.head.appendChild(style)
 }
+
+export function getLastPath() {
+  const pathname = window.location.pathname
+  const lastPath = pathname.split('/').filter(Boolean).pop()
+  return lastPath
+}
+
+export function clickOutside(ele: HTMLElement) {
+}

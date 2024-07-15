@@ -1,21 +1,20 @@
 import { CircleX, Play } from 'lucide-react'
 import { memo, useEffect, useRef, useState, type ElementRef } from 'react'
 import { requestBaseDetail } from '~/api'
-import { Skeleton } from '~components/ui/skeleton'
-import { getLastPath } from '~lib/utils'
-import { useModal } from '~store/modal'
-import { usePlaylist, type PlayList } from '~store/play-list'
-import type { BaseDetail } from '~types'
+import { Skeleton } from '~/components/ui/skeleton'
+import { getLastPath } from '~/lib/utils'
+import { useModal } from '~/store/modal'
+import { usePlaylist, type PlayList } from '~/store/play-list'
+import type { BaseDetail } from '~/types'
 
 interface PlayItemProps extends PlayList {
 }
-const currentBv = getLastPath()
 
 const PlayItem = memo(({ bv }: PlayItemProps) => {
+  const currentBv = getLastPath()
   const isCurrent = bv === currentBv
   const { remove } = usePlaylist()
   const { isOpen } = useModal()
-
   const [data, setData] = useState<BaseDetail>({} as BaseDetail)
   const [isLoading, setIsLoading] = useState(false)
   const itemRef = useRef<ElementRef<'div'>>(null)
