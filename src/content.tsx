@@ -2,6 +2,7 @@ import cssText from 'data-text:~/main.css'
 import type { PlasmoCSConfig } from "plasmo"
 import AddButton from '~/components/add-button'
 import HoverButton from '~/components/hover-button'
+import { useVideoControl } from '~/hooks/use-video-control'
 import { getLastPath, injectMainStyles } from '~/lib/utils'
 
 export const config: PlasmoCSConfig = {
@@ -34,6 +35,8 @@ const Content = () => {
   }
 
   injectMainStyles(cssText)
+
+  useVideoControl()
 
   return (
     <>
