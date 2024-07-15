@@ -5,6 +5,7 @@ import type {
 import PlayList from '~/components/play-list'
 import { Button } from '~/components/ui/button'
 import { getLastPath, injectMainStyles } from '~/lib/utils'
+import { useModal } from '~store/modal'
 import { usePlaylist } from '~store/play-list'
 
 export const config: PlasmoCSConfig = {
@@ -33,9 +34,14 @@ const Content = () => {
 
   // 从这开始写
   const { add } = usePlaylist()
+  const { toggle, isOpen } = useModal()
 
   function handleAddToList() {
     add(lastPath, 0, 0)
+  }
+
+  function handleToggleModal() {
+    toggle()
   }
 
   return (
@@ -57,6 +63,7 @@ const Content = () => {
           <Button
             size='sm'
             className='hover:translate-x-1 hover:scale-110 transition-all rounded-full'
+            onClick={() => handleToggleModal()}
           >
             开
           </Button>

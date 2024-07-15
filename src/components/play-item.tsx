@@ -1,8 +1,9 @@
 import { CircleX, Play } from 'lucide-react'
-import { ElementRef, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState, type ElementRef } from 'react'
 import { requestBaseDetail } from '~/api'
 import { Skeleton } from '~components/ui/skeleton'
 import { getLastPath } from '~lib/utils'
+import { useModal } from '~store/modal'
 import { usePlaylist, type PlayList } from '~store/play-list'
 import type { BaseDetail } from '~types'
 
@@ -10,9 +11,10 @@ interface PlayItemProps extends PlayList {
 }
 const currentBv = getLastPath()
 
-const PlayItem = ({ bv }: PlayItemProps) => {
+const PlayItem = memo(({ bv }: PlayItemProps) => {
   const isCurrent = bv === currentBv
   const { remove } = usePlaylist()
+  const { isOpen } = useModal()
 
   const [data, setData] = useState<BaseDetail>({} as BaseDetail)
   const [isLoading, setIsLoading] = useState(false)
@@ -41,15 +43,23 @@ const PlayItem = ({ bv }: PlayItemProps) => {
   useEffect(() => {
     getData()
     setTimeout(() => {
-      itemRef.current.scrollIntoView({
+      itemRef.current?.scrollIntoView({
         behavior: 'smooth'
       })
-
     })
   }, [])
 
+  useEffect(() => {
+    if (!isOpen || !isCurrent) {
+      return
+    }
+    itemRef.current?.scrollIntoView({
+      behavior: 'smooth'
+    })
+  }, [isOpen])
+
   if (isLoading) {
-    return <Skeleton className='w-full h-24' />
+    return <Skeleton className='w-full h-18' />
   }
 
   return (
@@ -75,6 +85,6 @@ const PlayItem = ({ bv }: PlayItemProps) => {
       </div>
     </div>
   )
-}
+})
 
 export default PlayItem
