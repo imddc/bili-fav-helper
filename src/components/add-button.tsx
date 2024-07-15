@@ -2,12 +2,11 @@ import { Button } from '~/components/ui/button'
 import { getLastPath } from '~/lib/utils'
 import { usePlaylist } from '~/store/play-list'
 
-
-const lastPath = getLastPath()
 const AddButton = () => {
   const { add } = usePlaylist()
 
   function handleAddToList() {
+    const lastPath = getLastPath()
     add(lastPath, 0, 0)
   }
 

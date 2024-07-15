@@ -16,3 +16,6 @@ export function getLastPath() {
   const lastPath = pathname.split('/').filter(Boolean).pop()
   return lastPath
 }
+
+export function clickOutside(ele: HTMLElement) {
+}
