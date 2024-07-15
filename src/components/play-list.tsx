@@ -16,18 +16,20 @@ const PlayList = ({ children }: PlayListProps) => {
   const { playlist } = usePlaylist()
 
   return (
-    <Dialog open>
+    <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>播放列表</DialogTitle>
         </DialogHeader>
 
-        {
-          playlist.map(item => (
-            <PlayItem key={item.bv} {...item} />
-          ))
-        }
+        <div className='max-h-[60vh] overflow-y-auto pr-2'>
+          {
+            playlist.map(item => (
+              <PlayItem key={item.bv} {...item} />
+            ))
+          }
+        </div>
 
       </DialogContent>
     </Dialog>
