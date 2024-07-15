@@ -1,12 +1,8 @@
 import cssText from 'data-text:~/main.css'
-import type {
-  PlasmoCSConfig,
-} from "plasmo"
-import PlayList from '~/components/play-list'
-import { Button } from '~/components/ui/button'
+import type { PlasmoCSConfig } from "plasmo"
+import AddButton from '~/components/add-button'
+import HoverButton from '~/components/hover-button'
 import { getLastPath, injectMainStyles } from '~/lib/utils'
-import { useModal } from '~store/modal'
-import { usePlaylist } from '~store/play-list'
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -32,43 +28,10 @@ const Content = () => {
   }
   injectMainStyles(cssText)
 
-  // 从这开始写
-  const { add } = usePlaylist()
-  const { toggle, isOpen } = useModal()
-
-  function handleAddToList() {
-    add(lastPath, 0, 0)
-  }
-
-  function handleToggleModal() {
-    toggle()
-  }
-
   return (
     <>
-      <div className="p-3 space-y-2 bg-sky-50/90 rounded fixed right-2 top-2">
-        <Button
-          size='sm'
-          onClick={handleAddToList}
-        >
-          添加到收藏
-        </Button>
-      </div>
-
-      {/* 悬浮球 */}
-      <div
-        className="fixed left-4 translate-y-1/2 top-1/2"
-      >
-        <PlayList>
-          <Button
-            size='sm'
-            className='hover:translate-x-1 hover:scale-110 transition-all rounded-full'
-            onClick={() => handleToggleModal()}
-          >
-            开
-          </Button>
-        </PlayList>
-      </div>
+      <HoverButton />
+      <AddButton />
     </>
   )
 }
