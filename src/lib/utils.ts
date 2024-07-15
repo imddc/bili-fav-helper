@@ -19,3 +19,8 @@ export function getLastPath() {
 
 export function clickOutside(ele: HTMLElement) {
 }
+
+export function play(bv: string) {
+  const target = new URL(`/video/${bv}`, 'https://www.bilibili.com')
+  location.replace(target)
+}
