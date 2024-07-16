@@ -1,6 +1,5 @@
 import cssText from 'data-text:~/main.css'
 import type { PlasmoCSConfig } from "plasmo"
-import AddButton from '~/components/add-button'
 import HoverButton from '~/components/hover-button'
 import { useVideoControl } from '~/hooks/use-video-control'
 import { getLastPath, injectMainStyles } from '~/lib/utils'
@@ -18,13 +17,12 @@ export const getStyle = () => {
 }
 
 function isBv(path: string) {
-  return !!path.startsWith('BV')
+  return path && path.startsWith('BV')
 }
 
 const Content = () => {
   const lastPath = getLastPath()
   if (!isBv(lastPath)) {
-    console.log(lastPath)
     return null
   }
   injectMainStyles(cssText)
@@ -34,7 +32,6 @@ const Content = () => {
   return (
     <>
       <HoverButton />
-      <AddButton />
     </>
   )
 }
