@@ -2,6 +2,7 @@ import { CircleOff, X } from 'lucide-react'
 import { type PropsWithChildren } from 'react'
 import PlayItem from '~/components/play-item'
 import { Button } from '~/components/ui/button'
+import { Checkbox } from '~/components/ui/checkbox'
 import {
   Dialog,
   DialogClose,
@@ -11,6 +12,7 @@ import {
   DialogTrigger
 } from "~/components/ui/dialog"
 import { getLastPath, play } from '~/lib/utils'
+import { useConfig } from '~/store/config'
 import { useModal } from '~/store/modal'
 import { usePlaylist } from '~/store/play-list'
 
@@ -20,6 +22,7 @@ interface PlayListProps extends PropsWithChildren {
 const PlayList = ({ children }: PlayListProps) => {
   const { playlist, remove } = usePlaylist()
   const { isOpen, onOpen, onClose } = useModal()
+  const { hosting, setHosting } = useConfig()
 
   function playAll() {
     const first = playlist[0]
@@ -38,6 +41,10 @@ const PlayList = ({ children }: PlayListProps) => {
     }
   }
 
+  function handleCheckedChange(val: boolean) {
+    setHosting(val)
+  }
+
   return (
     <Dialog open={isOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -50,7 +57,17 @@ const PlayList = ({ children }: PlayListProps) => {
           <DialogTitle>播放列表</DialogTitle>
         </DialogHeader>
 
-        <div className='flex justify-end'>
+        <div className='flex justify-end items-center gap-4'>
+          <div className="flex items-center space-x-2">
+            <label
+              htmlFor="terms"
+            >
+              控制播放行为
+            </label>
+
+            <Checkbox id="terms" checked={hosting} onCheckedChange={handleCheckedChange} />
+          </div>
+
           <Button size='sm' variant='secondary' onClick={() => playAll()}>播放全部</Button>
         </div>
 
