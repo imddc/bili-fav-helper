@@ -21,10 +21,6 @@ const PlayList = ({ children }: PlayListProps) => {
   const { playlist, remove } = usePlaylist()
   const { isOpen, onOpen, onClose } = useModal()
 
-  function handleOpenChange(open: boolean) {
-    open ? onOpen() : onClose()
-  }
-
   function playAll() {
     const first = playlist[0]
     play(first.bv)
@@ -43,9 +39,9 @@ const PlayList = ({ children }: PlayListProps) => {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => handleOpenChange}>
+    <Dialog open={isOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="z-50">
         <DialogClose className='absolute right-4 top-4' onClick={onClose}>
           <X className='size-4' />
         </DialogClose>
