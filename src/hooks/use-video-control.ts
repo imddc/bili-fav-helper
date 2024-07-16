@@ -1,15 +1,21 @@
 import { usePlaylist } from "~/store/play-list"
 import { getLastPath, play } from "~/lib/utils"
 import { useEffect } from "react"
-
+import { useConfig } from "~store/config"
 
 export function useVideoControl() {
   const { playlist } = usePlaylist()
   const player = document.querySelector('.bpx-player-video-wrap').querySelector('video')
+  const { hosting } = useConfig()
 
   const controlMap = {
     'ended': () => {
       console.log('ended 视频播放完成')
+
+      if (!hosting) {
+        return
+      }
+
       const lastIndex = getLastPath()
       if (!playlist.map(_ => _.bv).includes(lastIndex)) {
         return
